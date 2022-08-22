@@ -1,6 +1,10 @@
 import requests
 from requests.auth import HTTPBasicAuth
+from dotenv import dotenv_values
+import os
 
-login_url = 'https://api2.watttime.org/v2/login'
-rsp = requests.get(login_url, auth=HTTPBasicAuth('futureproject', 'futureproject21!'))
+dirname = os.path.dirname
+config = dotenv_values(os.path.join(dirname(dirname(__file__)), '.env'))
+rsp = requests.get(config["LOGIN_URL_WATTTIME"], auth=HTTPBasicAuth(config["WATTTIME_USERNAME"], config["WATTTIME_PASSWORD"]))
 print(rsp.json())
+
