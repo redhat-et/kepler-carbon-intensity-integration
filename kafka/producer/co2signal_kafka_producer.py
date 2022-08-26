@@ -1,17 +1,17 @@
 import requests
+import confluent_kafka
 import time
 import os
 from dotenv import dotenv_values
-import confluent_kafka
 import json
+import random
 
-
-emissions_producer = confluent_kafka.Producer({'bootstrap.servers':'localhost:9092'})
-
+emissions_producer = confluent_kafka.Producer({'bootstrap.servers': 'broker:9092'})
 
 def retrieve_token():
-    dirname = os.path.dirname
-    config = dotenv_values(os.path.join(dirname(dirname(__file__)), '.env'))
+    #dirname = os.path.dirname
+    #config = dotenv_values(os.path.join(dirname(dirname(__file__)), '.env'))
+    config = dotenv_values(os.path.join(os.path.dirname(__file__), 'producer.env'))
     return config['CO2SIGNAL_TOKEN']
 
 
@@ -36,11 +36,19 @@ def scrape_emission_data_given_country_codes(co2_token, country_codes):
         headers = {'auth-token': co2_token}
         parameters = {'countryCode': '{}'.format(country_code)}
         co2_emissions_data = requests.get(url=emissions_url, headers=headers, params=parameters).json()
+        print(co2_emissions_data)
         if co2_emissions_data['data']['fossilFuelPercentage'] is not None:
             refined_data = {'countryCode': co2_emissions_data['countryCode'], 'data': co2_emissions_data['data'], 'units': co2_emissions_data['units'], 'zoneName': country_codes[country_code]['zoneName']}
             co2_emissions_json_data = json.dumps(refined_data)
             emissions_producer.produce('co2-topic', co2_emissions_json_data.encode('utf-8'), callback=callback)
             emissions_producer.poll(1)
+
+        #simple test code
+        #refined_data = {'hello': 10}
+        #refined_data_json = json.dumps(refined_data)
+        #emissions_producer.produce('co2-topic', refined_data_json.encode('utf-8'), callback=callback)
+        #emissions_producer.poll(1)
+
         print("Sleeping...\n")
         time.sleep(120)
 

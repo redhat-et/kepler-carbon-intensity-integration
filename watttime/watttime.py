@@ -29,8 +29,8 @@ def scrape_real_time_emissions_given_locations(watttime_token, ba_locations):
 
 if __name__ == "__main__":
     start_time = time.time()
-    dirname = os.path.dirname
-    config = dotenv_values(os.path.join(dirname(dirname(__file__)), '.env'))
+    config = dotenv_values(os.path.join(os.path.dirname(__file__), 'watttime.env'))
+    
     watttime_token = requests.get(config["LOGIN_URL_WATTTIME"], auth=HTTPBasicAuth(config["WATTTIME_USERNAME"], config["WATTTIME_PASSWORD"])).json()['token']
     end_time = time.time()
     while True:
