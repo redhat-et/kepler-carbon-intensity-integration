@@ -36,3 +36,18 @@ Receive messages:
 ```sh
 ./bin/kafka-console-consumer.sh --bootstrap-server  my-cluster-kafka-bootstrap:9092 --topic co2-topic --from-beginning
 ```
+
+## CO2Signal Deployment
+
+### Create a configuration
+use [producer.env sample](./producer/producer.env.sample) to create a `producer.env` and a Kubernetes secret:
+
+```bash
+cd producer
+kubectl create secret generic co2signal-config --from-file=./producer.env -n monitoring
+```
+
+Then deploy the co2signal producer:
+```bash
+kubectl apply -f k8s_deployment.yaml
+```

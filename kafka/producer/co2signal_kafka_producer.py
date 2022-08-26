@@ -6,14 +6,9 @@ from dotenv import dotenv_values
 import json
 import random
 
-emissions_producer = confluent_kafka.Producer({'bootstrap.servers': 'broker:9092'})
-
-def retrieve_token():
-    #dirname = os.path.dirname
-    #config = dotenv_values(os.path.join(dirname(dirname(__file__)), '.env'))
+def retrieve_config():
     config = dotenv_values(os.path.join(os.path.dirname(__file__), 'producer.env'))
-    return config['CO2SIGNAL_TOKEN']
-
+    return config
 
 def scrape_all_country_codes(co2_token):
     country_codes_url = 'http://api.electricitymap.org/v3/zones'
@@ -29,19 +24,19 @@ def callback(err, msg):
         message = 'Produced message on topic {} with value of {}\n'.format(msg.topic(), msg.value().decode('utf-8'))
         print(message)
 
-def scrape_emission_data_given_country_codes(co2_token, country_codes):
+def scrape_emission_data_given_country_codes(co2_token, country_codes, kafka_producer, topic, pause_interval):
     for country_code in country_codes.keys():
         print("Scraping countryCode: {}...\n".format(country_code))
         emissions_url = "https://api.co2signal.com/v1/latest"
         headers = {'auth-token': co2_token}
         parameters = {'countryCode': '{}'.format(country_code)}
         co2_emissions_data = requests.get(url=emissions_url, headers=headers, params=parameters).json()
-        print(co2_emissions_data)
         if co2_emissions_data['data']['fossilFuelPercentage'] is not None:
             refined_data = {'countryCode': co2_emissions_data['countryCode'], 'data': co2_emissions_data['data'], 'units': co2_emissions_data['units'], 'zoneName': country_codes[country_code]['zoneName']}
             co2_emissions_json_data = json.dumps(refined_data)
-            emissions_producer.produce('co2-topic', co2_emissions_json_data.encode('utf-8'), callback=callback)
-            emissions_producer.poll(1)
+            print(co2_emissions_data)
+            kafka_producer.produce(topic, co2_emissions_json_data.encode('utf-8'), callback=callback)
+            kafka_producer.poll(1)
 
         #simple test code
         #refined_data = {'hello': 10}
@@ -50,12 +45,18 @@ def scrape_emission_data_given_country_codes(co2_token, country_codes):
         #emissions_producer.poll(1)
 
         print("Sleeping...\n")
-        time.sleep(120)
+        time.sleep(pause_interval)
 
 
 if __name__ == "__main__":
     start_time = end_time = time.time()
-    co2_token = retrieve_token()
+    config = retrieve_config()
+    co2_token = config['CO2SIGNAL_TOKEN']
+    servers = config['BOOTSTRAP_SERVER']
+    topic = config['KAFKA_TOPIC']
+    pause_interval = int(config['CO2SIGNAL_PAUSE_INTERVAL'])
+    emissions_producer = confluent_kafka.Producer({'bootstrap.servers': servers})
     while True:
         retrieved_countries_and_data = scrape_all_country_codes(co2_token)
-        scrape_emission_data_given_country_codes(co2_token, retrieved_countries_and_data)
+        scrape_emission_data_given_country_codes(co2_token=co2_token, country_codes = retrieved_countries_and_data, 
+            kafka_producer=emissions_producer, topic=topic, pause_interval=pause_interval)
