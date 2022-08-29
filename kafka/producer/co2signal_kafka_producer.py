@@ -30,14 +30,17 @@ def scrape_emission_data_given_country_codes(co2_token, country_codes, kafka_pro
         emissions_url = "https://api.co2signal.com/v1/latest"
         headers = {'auth-token': co2_token}
         parameters = {'countryCode': '{}'.format(country_code)}
-        co2_emissions_data = requests.get(url=emissions_url, headers=headers, params=parameters).json()
-        if co2_emissions_data['data']['fossilFuelPercentage'] is not None:
-            refined_data = {'countryCode': co2_emissions_data['countryCode'], 'data': co2_emissions_data['data'], 'units': co2_emissions_data['units'], 'zoneName': country_codes[country_code]['zoneName']}
-            co2_emissions_json_data = json.dumps(refined_data)
-            print(co2_emissions_data)
-            kafka_producer.produce(topic, co2_emissions_json_data.encode('utf-8'), callback=callback)
-            kafka_producer.poll(1)
-
+        try:
+            co2_emissions_data = requests.get(url=emissions_url, headers=headers, params=parameters).json()
+            if co2_emissions_data['data']['fossilFuelPercentage'] is not None:
+                refined_data = {'countryCode': co2_emissions_data['countryCode'], 'data': co2_emissions_data['data'], 'units': co2_emissions_data['units'], 'zoneName': country_codes[country_code]['zoneName']}
+                co2_emissions_json_data = json.dumps(refined_data)
+                print(co2_emissions_data)
+                kafka_producer.produce(topic, co2_emissions_json_data.encode('utf-8'), callback=callback)
+                kafka_producer.poll(1)
+        except:
+            print('failed to query')
+            pass
         #simple test code
         #refined_data = {'hello': 10}
         #refined_data_json = json.dumps(refined_data)
