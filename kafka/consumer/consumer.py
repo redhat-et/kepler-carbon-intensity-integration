@@ -29,6 +29,6 @@ def consume(topic_name,bootstrap_server):
 
 
 if __name__ == "__main__":
-    topic_name = os.getenv['TOPIC', 'new-topic']
-    bootstrap_server = os.getenv['BOOTSTRAP_SERVER','localhost:9092']
+    topic_name = os.getenv('TOPIC', 'new-topic')
+    bootstrap_server = os.getenv('BOOTSTRAP_SERVER','localhost:9092')
     consume(topic_name,bootstrap_server)
