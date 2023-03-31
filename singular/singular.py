@@ -14,26 +14,26 @@ from prometheus_client.core import GaugeMetricFamily, REGISTRY
 mock=True
 
 # create a longitude and latitude lookup table
-def get_lat_long(region):
+# return longitude and latitude for a region
+def get_long_lat(region):
     if region == 'ISONE':
-        return 42.35, -71.07
+        return -71.5, 42.5
     elif region == 'CAISO':
-        return 37.77, -122.42
+        return -121.5, 38.5
     elif region == 'PJM':
-        return 39.95, -75.16
+        return -75.5, 39.5
     elif region == 'MISO':
-        return 41.69, -93.60
+        return -89.5, 44.5
     elif region == 'NYISO':
-        return 43.04, -75.50
+        return -75.5, 43.5
     elif region == 'SPP':
-        return 38.58, -90.50
+        return -100.5, 37.5
     elif region == 'BPA':
-        return 45.52, -122.68
+        return -122.5, 45.5
     elif region == 'IESO':
-        return 43.65, -79.38
+        return -80.5, 44.5
     else:
         return 0, 0
-
 
 # get the data from singularity api and return the data as pandas dataframe
 def get_data():
