@@ -1,0 +1,8 @@
+FROM python:latest
+
+COPY requirements.txt requirements.txt
+RUN pip3 install -r requirements.txt
+ADD singular.py /opt
+# test it with
+# podman run -ti -v `pwd`:/opt --net=host quay.io/rootfs/singular:latest
+ENTRYPOINT [ "python3", "/opt/singular.py"]

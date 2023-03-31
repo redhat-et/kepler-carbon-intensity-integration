@@ -1,0 +1,6 @@
+prometheus-client
+requests
+python-dotenv
+singularity-energy
+pandas
+numpy
