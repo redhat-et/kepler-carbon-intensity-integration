@@ -30,13 +30,24 @@ def scrape_real_time_emissions_given_locations(watttime_token, ba_locations):
 if __name__ == "__main__":
     start_time = time.time()
     config = dotenv_values(os.path.join(os.path.dirname(__file__), 'watttime.env'))
-    
-    watttime_token = requests.get(config["LOGIN_URL_WATTTIME"], auth=HTTPBasicAuth(config["WATTTIME_USERNAME"], config["WATTTIME_PASSWORD"])).json()['token']
+
+    if config["WATTTIME_NEED_REGISTER"] == "True":    
+        register_url = 'https://api2.watttime.org/v2/register'
+        params = {'username': config["WATTTIME_USERNAME"],
+                'password': config["WATTTIME_PASSWORD"],
+                'email': config["WATTTIME_EMAIL"],
+                'org': 'freds world'}
+        rsp = requests.post(register_url, json=params)
+        
+    resp  = requests.get(config["LOGIN_URL_WATTTIME"], auth=HTTPBasicAuth(config["WATTTIME_USERNAME"], config["WATTTIME_PASSWORD"]))
+    watttime_token = resp.json()['token']
+    print(watttime_token)
+    all_regions_ba = scrape_all_ba_locations(watttime_token)
+    print(all_regions_ba)
     end_time = time.time()
     while True:
         if ((end_time - start_time) / 60) >= 30: 
             watttime_token = requests.get(config["LOGIN_URL_WATTTIME"], auth=HTTPBasicAuth(config["WATTTIME_USERNAME"], config["WATTTIME_PASSWORD"])).json()['token']
-        all_regions_ba = scrape_all_ba_locations(watttime_token)
         emissions = scrape_real_time_emissions_given_locations(watttime_token, all_regions_ba)
         print(emissions)
         #time.sleep(10)
