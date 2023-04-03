@@ -124,7 +124,7 @@ class CarbonIntensityCollector(object):
     def collect(self):
         # loop through df, for each row, extract the 'start_date' and 'ISONE', 'CAISO', 'PJM', 'MISO', 'NYISO', 'SPP', 'BPA', 'IESO' 
         # create a prometheus metric for each region code
-        metric = GaugeMetricFamily('carbon_intensity', 'carbon_intensity', labels=['region'])
+        metric = GaugeMetricFamily('carbon_intensity', 'carbon_intensity', labels=['region', 'longitude', 'latitude'])
         # get the current row using cursor
         row = self.df.iloc[self.cursor]
         # increment the cursor by 1 mod the length of the dataframe
@@ -133,10 +133,12 @@ class CarbonIntensityCollector(object):
         start_date = row['start_date']
         for region_code in ['ISONE', 'CAISO', 'PJM', 'MISO', 'NYISO', 'SPP', 'BPA', 'IESO']: 
             carbon_intensity = row[region_code]
-            #longitude, latitude = get_lat_long(region_code)
+            longitude, latitude = get_long_lat(region_code)
+            longitude = str(longitude)
+            latitude = str(latitude)
             # create a prometheus metric for each region code        
             # create a prometheus metric
-            metric.add_metric([region_code], carbon_intensity)
+            metric.add_metric([region_code, longitude, latitude], carbon_intensity)
         print(metric)
         yield metric
 
