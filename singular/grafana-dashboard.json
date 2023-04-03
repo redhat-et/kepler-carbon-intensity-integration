@@ -79,7 +79,7 @@
             "mouseWheelZoom": true,
             "showAttribution": true,
             "showDebug": false,
-            "showScale": false,
+            "showScale": true,
             "showZoom": true
           },
           "layers": [
@@ -125,7 +125,7 @@
                 "longitude": "longitude",
                 "mode": "coords"
               },
-              "name": "Layer 1",
+              "name": "BA Location",
               "tooltip": true,
               "type": "markers"
             }
@@ -167,7 +167,7 @@
               "mode": "palette-classic"
             },
             "custom": {
-              "axisLabel": "lbs/kWatt",
+              "axisLabel": "lbs/MWatt",
               "axisPlacement": "left",
               "barAlignment": 0,
               "drawStyle": "line",
@@ -286,6 +286,54 @@
             "legendFormat": "ISONE",
             "range": true,
             "refId": "B"
+          },
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "_59D1014z"
+            },
+            "editorMode": "builder",
+            "expr": "carbon_intensity{region=\"CAISO\"}",
+            "hide": false,
+            "legendFormat": "CAISO",
+            "range": true,
+            "refId": "C"
+          },
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "_59D1014z"
+            },
+            "editorMode": "builder",
+            "expr": "carbon_intensity{region=\"SPP\"}",
+            "hide": false,
+            "legendFormat": "SPP",
+            "range": true,
+            "refId": "D"
+          },
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "_59D1014z"
+            },
+            "editorMode": "builder",
+            "expr": "carbon_intensity{region=\"PJM\"}",
+            "hide": false,
+            "legendFormat": "PJM",
+            "range": true,
+            "refId": "E"
+          },
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "_59D1014z"
+            },
+            "editorMode": "builder",
+            "expr": "carbon_intensity{region=\"BPA\"}",
+            "hide": false,
+            "legendFormat": "BPA",
+            "range": true,
+            "refId": "F"
           }
         ],
         "title": "Carbon Intensity by Region",
@@ -306,6 +354,6 @@
     "timezone": "",
     "title": "singular",
     "uid": "QVpAvVY4k",
-    "version": 16,
+    "version": 20,
     "weekStart": ""
   }
