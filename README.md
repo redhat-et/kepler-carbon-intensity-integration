@@ -1,4 +1,4 @@
-#Integrating Kepler and Carbon Intensity Metrics
+# Integrating Kepler and Carbon Intensity Metrics
 
 ## Carbon Intensity Metrics
 Using historical data obtained from [Singularity](https://carbonara.singularity.energy/) to simulate real-time carbon intensity
