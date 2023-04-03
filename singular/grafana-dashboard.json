@@ -63,8 +63,8 @@
           "overrides": []
         },
         "gridPos": {
-          "h": 6,
-          "w": 24,
+          "h": 12,
+          "w": 23,
           "x": 0,
           "y": 0
         },
@@ -209,44 +209,13 @@
               ]
             }
           },
-          "overrides": [
-            {
-              "matcher": {
-                "id": "byRegexp",
-                "options": ".*NYISO.*"
-              },
-              "properties": [
-                {
-                  "id": "color",
-                  "value": {
-                    "fixedColor": "red",
-                    "mode": "fixed"
-                  }
-                }
-              ]
-            },
-            {
-              "matcher": {
-                "id": "byRegexp",
-                "options": ".*ISONE.*"
-              },
-              "properties": [
-                {
-                  "id": "color",
-                  "value": {
-                    "fixedColor": "green",
-                    "mode": "fixed"
-                  }
-                }
-              ]
-            }
-          ]
+          "overrides": []
         },
         "gridPos": {
-          "h": 15,
-          "w": 24,
+          "h": 13,
+          "w": 23,
           "x": 0,
-          "y": 6
+          "y": 12
         },
         "id": 2,
         "options": {
@@ -347,13 +316,13 @@
       "list": []
     },
     "time": {
-      "from": "now-12h",
+      "from": "now-3h",
       "to": "now"
     },
     "timepicker": {},
     "timezone": "",
     "title": "singular",
     "uid": "QVpAvVY4k",
-    "version": 20,
+    "version": 22,
     "weekStart": ""
   }
