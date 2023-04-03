@@ -167,7 +167,7 @@
               "mode": "palette-classic"
             },
             "custom": {
-              "axisLabel": "lbs/MWatt",
+              "axisLabel": "lbs/MWh",
               "axisPlacement": "left",
               "barAlignment": 0,
               "drawStyle": "line",
