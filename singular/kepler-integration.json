@@ -38,7 +38,7 @@
               "mode": "palette-classic"
             },
             "custom": {
-              "axisLabel": "CO2 (lbs)",
+              "axisLabel": "CO2 (lbs/h)",
               "axisPlacement": "auto",
               "barAlignment": 0,
               "drawStyle": "line",
@@ -83,7 +83,7 @@
           "overrides": []
         },
         "gridPos": {
-          "h": 8,
+          "h": 10,
           "w": 12,
           "x": 0,
           "y": 0
@@ -212,7 +212,7 @@
           "overrides": []
         },
         "gridPos": {
-          "h": 8,
+          "h": 10,
           "w": 12,
           "x": 12,
           "y": 0
@@ -285,216 +285,6 @@
         "type": "timeseries"
       },
       {
-        "collapsed": false,
-        "datasource": "prometheus-1",
-        "gridPos": {
-          "h": 1,
-          "w": 24,
-          "x": 0,
-          "y": 8
-        },
-        "id": 8,
-        "panels": [],
-        "title": "Power Consumption",
-        "type": "row"
-      },
-      {
-        "datasource": {
-          "type": "prometheus",
-          "uid": "_59D1014z"
-        },
-        "description": "",
-        "fieldConfig": {
-          "defaults": {
-            "color": {
-              "mode": "palette-classic"
-            },
-            "custom": {
-              "axisLabel": "watt",
-              "axisPlacement": "left",
-              "barAlignment": 0,
-              "drawStyle": "bars",
-              "fillOpacity": 44,
-              "gradientMode": "opacity",
-              "hideFrom": {
-                "graph": false,
-                "legend": false,
-                "tooltip": false,
-                "viz": false
-              },
-              "lineInterpolation": "linear",
-              "lineWidth": 0,
-              "pointSize": 5,
-              "scaleDistribution": {
-                "type": "linear"
-              },
-              "showPoints": "always",
-              "spanNulls": false,
-              "stacking": {
-                "group": "A",
-                "mode": "normal"
-              },
-              "thresholdsStyle": {
-                "mode": "off"
-              }
-            },
-            "mappings": [],
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "green",
-                  "value": null
-                },
-                {
-                  "color": "red",
-                  "value": 80
-                }
-              ]
-            }
-          },
-          "overrides": [
-            {
-              "matcher": {
-                "id": "byRegexp",
-                "options": ".*DRAM.*"
-              },
-              "properties": [
-                {
-                  "id": "color",
-                  "value": {
-                    "fixedColor": "orange",
-                    "mode": "fixed"
-                  }
-                }
-              ]
-            },
-            {
-              "matcher": {
-                "id": "byRegexp",
-                "options": ".*OTHER.*"
-              },
-              "properties": [
-                {
-                  "id": "color",
-                  "value": {
-                    "fixedColor": "blue",
-                    "mode": "fixed"
-                  }
-                }
-              ]
-            },
-            {
-              "matcher": {
-                "id": "byRegexp",
-                "options": ".*GPU.*"
-              },
-              "properties": [
-                {
-                  "id": "color",
-                  "value": {
-                    "fixedColor": "semi-dark-green",
-                    "mode": "fixed"
-                  }
-                }
-              ]
-            },
-            {
-              "matcher": {
-                "id": "byRegexp",
-                "options": ".*PKG.*"
-              },
-              "properties": [
-                {
-                  "id": "color",
-                  "value": {
-                    "fixedColor": "red",
-                    "mode": "fixed"
-                  }
-                }
-              ]
-            }
-          ]
-        },
-        "gridPos": {
-          "h": 10,
-          "w": 24,
-          "x": 0,
-          "y": 9
-        },
-        "id": 16,
-        "options": {
-          "legend": {
-            "calcs": [
-              "mean"
-            ],
-            "displayMode": "table",
-            "placement": "right",
-            "sortBy": "Mean",
-            "sortDesc": true
-          },
-          "tooltip": {
-            "mode": "single",
-            "sort": "none"
-          }
-        },
-        "targets": [
-          {
-            "datasource": {
-              "type": "prometheus",
-              "uid": "_59D1014z"
-            },
-            "editorMode": "code",
-            "expr": "sum by (pod_name, container_namespace) (irate(kepler_container_package_joules_total{container_namespace=~\"$namespace\", pod_name=~\"$pod\"}[1m]))",
-            "hide": false,
-            "interval": "",
-            "legendFormat": "{{pod_name}} / {{container_namespace}} / PKG",
-            "range": true,
-            "refId": "A"
-          },
-          {
-            "datasource": {
-              "type": "prometheus",
-              "uid": "_59D1014z"
-            },
-            "editorMode": "code",
-            "expr": "sum by (pod_name, container_namespace) (irate(kepler_container_dram_joules_total{container_namespace=~\"$namespace\", pod_name=~\"$pod\"}[1m]))",
-            "hide": false,
-            "interval": "",
-            "legendFormat": "{{pod_name}} / {{container_namespace}} / DRAM",
-            "range": true,
-            "refId": "B"
-          },
-          {
-            "datasource": {
-              "type": "prometheus",
-              "uid": "_59D1014z"
-            },
-            "editorMode": "code",
-            "expr": "sum by (pod_name, container_namespace) (irate(kepler_container_other_host_components_joules_total{container_namespace=~\"$namespace\", pod_name=~\"$pod\"}[1m]))",
-            "hide": false,
-            "interval": "",
-            "legendFormat": "{{pod_name}} / {{container_namespace}} / OTHER",
-            "range": true,
-            "refId": "C"
-          },
-          {
-            "datasource": {
-              "type": "prometheus",
-              "uid": "_59D1014z"
-            },
-            "editorMode": "code",
-            "expr": "sum by (pod_name, container_namespace) (irate(kepler_container_gpu_joules_total{container_namespace=~\"$namespace\", pod_name=~\"$pod\"}[1m]))",
-            "hide": false,
-            "legendFormat": "{{pod_name}} / {{container_namespace}} / GPU",
-            "range": true,
-            "refId": "D"
-          }
-        ],
-        "title": "Pod/Process Power Consumption (W) in Namespace: $namespace",
-        "type": "timeseries"
-      },
-      {
         "datasource": {
           "type": "prometheus",
           "uid": "${datasource}"
@@ -525,7 +315,7 @@
           "h": 7,
           "w": 24,
           "x": 0,
-          "y": 19
+          "y": 10
         },
         "id": 15,
         "options": {
@@ -550,7 +340,7 @@
               "uid": "${datasource}"
             },
             "editorMode": "code",
-            "expr": "sum by (container_namespace) (\n  (increase(kepler_container_package_joules_total{container_namespace=~\"$namespace\"}[1h])\n    *$watt_per_second_to_kWh\n  ) *\n  (count_over_time(kepler_container_package_joules_total{container_namespace=~\"$namespace\"}[24h])/\n    count_over_time(kepler_container_package_joules_total{container_namespace=~\"$namespace\"}[1h])\n  )\n)\n+\nsum by (container_namespace) (\n  (increase(kepler_container_dram_joules_total{container_namespace=~\"$namespace\"}[1h])\n    *$watt_per_second_to_kWh\n  ) *\n  (count_over_time(kepler_container_dram_joules_total{container_namespace=~\"$namespace\"}[24h])/\n    count_over_time(kepler_container_dram_joules_total{container_namespace=~\"$namespace\"}[1h])\n  )\n)",
+            "expr": "sum by (container_namespace) (\n  (increase(kepler_container_package_joules_total[1h])\n    *$watt_per_second_to_kWh\n  ) *\n  (count_over_time(kepler_container_package_joules_total[24h])/\n    count_over_time(kepler_container_package_joules_total[1h])\n  )\n)\n+\nsum by (container_namespace) (\n  (increase(kepler_container_dram_joules_total[1h])\n    *$watt_per_second_to_kWh\n  ) *\n  (count_over_time(kepler_container_dram_joules_total[24h])/\n    count_over_time(kepler_container_dram_joules_total[1h])\n  )\n)",
             "interval": "",
             "legendFormat": "{{container_namespace}}",
             "range": true,
@@ -558,6 +348,68 @@
           }
         ],
         "title": "Total Power Consumption (PKG+DRAM) by Namespace (kWh per day)",
+        "type": "bargauge"
+      },
+      {
+        "datasource": {
+          "type": "prometheus",
+          "uid": "_59D1014z"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "light-yellow",
+                  "value": null
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 7,
+          "w": 24,
+          "x": 0,
+          "y": 17
+        },
+        "id": 16,
+        "options": {
+          "displayMode": "gradient",
+          "minVizHeight": 10,
+          "minVizWidth": 0,
+          "orientation": "auto",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "showUnfilled": true
+        },
+        "pluginVersion": "9.0.4",
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "_59D1014z"
+            },
+            "editorMode": "code",
+            "expr": "sum by (container_namespace) (\n  (increase(kepler_container_package_joules_total[1h]) * on() group_left() carbon_intensity{region=~\"$Region\"}\n  * $watt_per_second_to_kWh / 1000\n  ) *\n  (count_over_time(kepler_container_package_joules_total[24h])/\n    count_over_time(kepler_container_package_joules_total[1h])\n  )\n)\n+\nsum by (container_namespace) (\n  (increase(kepler_container_dram_joules_total[1h]) * on() group_left() carbon_intensity{region=~\"$Region\"}\n* $watt_per_second_to_kWh / 1000\n  ) *\n  (count_over_time(kepler_container_dram_joules_total[24h])/\n    count_over_time(kepler_container_dram_joules_total[1h])\n  )\n)",
+            "interval": "",
+            "legendFormat": "{{container_namespace}}",
+            "range": true,
+            "refId": "A"
+          }
+        ],
+        "title": "Total Carbon Intensity (PKG+DRAM) by Namespace (lbs per day)",
         "type": "bargauge"
       }
     ],
@@ -652,8 +504,8 @@
           "allValue": ".*",
           "current": {
             "selected": false,
-            "text": "SPP",
-            "value": "SPP"
+            "text": "ISONE",
+            "value": "ISONE"
           },
           "datasource": {
             "type": "prometheus",
@@ -691,13 +543,13 @@
       ]
     },
     "time": {
-      "from": "now-15m",
+      "from": "now-6h",
       "to": "now"
     },
     "timepicker": {},
     "timezone": "browser",
     "title": "Kepler Exporter Dashboard",
     "uid": "NhnADUW4z",
-    "version": 22,
+    "version": 26,
     "weekStart": ""
   }
