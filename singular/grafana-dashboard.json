@@ -316,13 +316,13 @@
       "list": []
     },
     "time": {
-      "from": "now-3h",
+      "from": "now-1h",
       "to": "now"
     },
     "timepicker": {},
     "timezone": "",
     "title": "singular",
     "uid": "QVpAvVY4k",
-    "version": 22,
+    "version": 23,
     "weekStart": ""
   }
