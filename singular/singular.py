@@ -111,7 +111,7 @@ def get_data():
                 df = pd.merge(df, df1, on='start_date', how='outer', suffixes=('_x',None))
         # only keep 'start_date' 'ISONE', 'CAISO', 'PJM', 'MISO', 'NYISO', 'SPP', 'BPA', 'IESO', and save the dataframe to csv file
         df = df[['start_date', 'ISONE', 'CAISO', 'PJM', 'MISO', 'NYISO', 'SPP', 'BPA', 'IESO']]
-        df.to_csv('carbon_intensity.csv', index=False)
+        #df.to_csv('carbon_intensity.csv', index=False)
         return df
 
 # create a prometheus metric collector
