@@ -1,3 +1,17 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: monitoring
+---
+apiVersion: v1
+data:
+  config.env: dGVzdAo=
+kind: Secret
+metadata:
+  name: config-env
+  namespace: monitoring
+type: Opaque
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
