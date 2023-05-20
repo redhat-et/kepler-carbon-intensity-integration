@@ -5,7 +5,7 @@ metadata:
 ---
 apiVersion: v1
 data:
-  config.env: dGVzdAo=
+  config.env: QVBJX0tFWT10ZXN0Cg==
 kind: Secret
 metadata:
   name: config-env
